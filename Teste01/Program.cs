@@ -12,13 +12,18 @@ namespace Teste01
 
             SQLiteCommand  cmd = new SQLiteCommand("SELECT * FROM TESTETB", cn0.sqlConnection);
             SQLiteDataReader dtr = cmd.ExecuteReader();
-            
-            cn0.Executa("INSERT INTO TESTETB (ID,NOME, SOBRENOME, CIDADE) VALUES (5, 'MANUEL', 'DA SILVA', 'CABREÚVA')");
+
+            cn0.Executa("DELETE FROM TESTETB WHERE ID = 5");            
+            cn0.Executa("INSERT INTO TESTETB (ID,NOME, SOBRENOME, CIDADE, DATA) " + 
+                        " VALUES (5, 'MANUEL', 'DA SILVA', 'CABREÚVA','" + DateTime.Now.ToString() + "')");
             //dtr.Read ();
             while (dtr.Read())
             {
             //Console.WriteLine(dtr.GetValue(dtr.GetOrdinal("NOME")));
-                Console.WriteLine(dtr["NOME"] + " " + dtr["SOBRENOME"] + " nasceu em " + dtr["CIDADE"]);
+                Console.WriteLine(dtr["NOME"] + " " + 
+                                  dtr["SOBRENOME"] + " nasceu em " + 
+                                  dtr["CIDADE"] + ", Data Incl.:"+
+                                  dtr["DATA"]);
             }
             cn0.Close();
         }
