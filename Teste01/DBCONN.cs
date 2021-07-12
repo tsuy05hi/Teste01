@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Data.SQLite;
 
 namespace Teste01
@@ -39,6 +40,32 @@ namespace Teste01
             sqlCommand.CommandType = System.Data.CommandType.Text;
             sqlCommand.CommandText = sqlExpression;
             i = sqlCommand.ExecuteNonQuery();
+        }
+        public void InsereOBJ( Entrada _ent)
+        {
+            Object o = _ent;
+            Type type = o.GetType();
+            string FieldName ;
+            string FieldValueStr;
+            FieldValueStr = "";
+            //int FieldValueInt;
+             foreach(PropertyInfo pi in type.GetProperties())
+             {
+                FieldName = pi.Name;
+                // if ( pi.GetValue(FieldName).GetType() == typeof(int) )
+                //if ( FieldName != "ID")
+                //{
+                    //FieldValueInt = (int)pi.GetValue(FieldName).ToString();
+                    //Console.WriteLine(FieldName + "/" + FieldValueInt.ToString());
+                //}
+                //else
+                //{
+                    FieldValueStr = pi.GetValue(FieldName).ToString();
+                    Console.WriteLine(FieldName + "/" + FieldValueStr);
+                //}  
+                
+             }
+
         }
     }
 }
