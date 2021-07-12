@@ -41,13 +41,18 @@ namespace Teste01
             sqlCommand.CommandText = sqlExpression;
             i = sqlCommand.ExecuteNonQuery();
         }
-        public void InsereOBJ( Entrada _ent)
+        public void InsereOBJ( Entrada _ent, string _tabName)
         {
             Object o = _ent;
+            Type inteiro = typeof(System.Int32);
             Type type = o.GetType();
             string FieldName ;
             string FieldValueStr;
+            string strSQL;
+            string strValues;
             FieldValueStr = "";
+            strSQL = "INSERT INTO " + _tabName + " (";
+            strValues = " Values (";
             //int FieldValueInt;
              foreach(PropertyInfo pi in type.GetProperties())
              {
@@ -55,17 +60,31 @@ namespace Teste01
                 // if ( pi.GetValue(FieldName).GetType() == typeof(int) )
                 //if ( FieldName != "ID")
                 //{
-                    //FieldValueInt = (int)pi.GetValue(FieldName).ToString();
+                //    FieldValueInt = (int)pi.GetValue(FieldName).ToString();
                     //Console.WriteLine(FieldName + "/" + FieldValueInt.ToString());
                 //}
                 //else
                 //{
-                    FieldValueStr = pi.GetValue(FieldName).ToString();
-                    Console.WriteLine(FieldName + "/" + FieldValueStr);
+                    FieldValueStr = pi.GetValue(o).ToString();
+                    //Console.WriteLine(FieldName + "/" + FieldValueStr);
+                    //Console.WriteLine(pi.GetValue(o).GetType());
                 //}  
+                strSQL = strSQL + (strSQL.Substring(strSQL.Length - 1, 1) == "("?"":",") + FieldName;
+                if (pi.GetValue(o).GetType().Equals(inteiro))
+                {
+                    strValues  = strValues + (strValues.Substring(strValues.Length - 1, 1) == "("?"":",") + FieldValueStr;
+                }
+                else
+                {
+                    strValues  = strValues + (strValues.Substring(strValues.Length - 1, 1) == "("?"":",") + "'" + FieldValueStr + "'";
+                }
                 
              }
-
+             strSQL = strSQL + " )";
+             strValues = strValues + " )";
+             
+             Console.WriteLine(strSQL + strValues);
+             Executa(strSQL + strValues);
         }
     }
 }
