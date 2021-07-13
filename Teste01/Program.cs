@@ -8,22 +8,29 @@ namespace Teste01
     {
         static void Main(string[] args)
         {
+            
             DBCONN cn0 = new DBCONN(); //classe define a connectionstring e abre a conexão
 
-            SQLiteCommand  cmd = new SQLiteCommand("SELECT * FROM TESTETB", cn0.sqlConnection);
-            SQLiteDataReader dtr = cmd.ExecuteReader();
-            Entrada ent = new Entrada(5, "Jose", "dos Santos", "Botucatu","" + DateTime.Now.ToString() + "");
-            
-            cn0.Executa("DELETE FROM TESTETB WHERE ID IN (5,6) ");            
-            cn0.InsereOBJ(ent, "TESTETB");
-            //cn0.Executa("INSERT INTO TESTETB (ID,NOME, SOBRENOME, CIDADE, DATA) " + 
-            //            " VALUES (5, 'MANUEL', 'DA SILVA', 'CABREÚVA','" + DateTime.Now.ToString() + "')");
+            //Programado na classe DBCONN
+            //SQLiteCommand  cmd = new SQLiteCommand("SELECT * FROM TESTETB", cn0.sqlConnection);
+            //SQLiteDataReader dtr = cmd.ExecuteReader();
 
-            //dtr.Read ();
+            var dtr = cn0.Consulta("SELECT ID FROM TESTETB WHERE ID = (SELECT MAX(ID) FROM TESTETB) ");
+            dtr.Read();
+            //Precisa converter para int32, porque retorna int64
+            var MAXID = Convert.ToInt32(dtr["ID"]) + 1;
+            //Console.WriteLine(MAXID);
+            //Console.WriteLine(MAXID.GetType());
+            Entrada ent = new Entrada(MAXID, "Jose", "dos Santos", "Botucatu","" + DateTime.Now.ToString() + "");
+            
+            cn0.Executa("DELETE FROM TESTETB WHERE ID > 5 ");            
+            cn0.InsereOBJ(ent, "TESTETB");
+            
+            dtr = cn0.Consulta("SELECT * FROM TESTETB");
             while (dtr.Read())
             {
-            //Console.WriteLine(dtr.GetValue(dtr.GetOrdinal("NOME")));
-                Console.WriteLine(dtr["NOME"] + " " + 
+                //Console.WriteLine(dtr.GetValue(dtr.GetOrdinal("NOME")));
+                Console.WriteLine(dtr["ID"] + " " + dtr["NOME"] + " " + 
                                   dtr["SOBRENOME"] + " nasceu em " + 
                                   dtr["CIDADE"] + ", Data Incl.:"+
                                   dtr["DATA"]);

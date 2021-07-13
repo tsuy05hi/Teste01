@@ -83,8 +83,14 @@ namespace Teste01
              strSQL = strSQL + " )";
              strValues = strValues + " )";
              
-             Console.WriteLine(strSQL + strValues);
+             //Console.WriteLine(strSQL + strValues);
              Executa(strSQL + strValues);
+        }
+        public SQLiteDataReader Consulta(string _sqlQuery)
+        {
+            SQLiteCommand  _cmd = new SQLiteCommand(_sqlQuery, sqlConnection);
+            SQLiteDataReader _sqlDataReader = _cmd.ExecuteReader();
+            return _sqlDataReader;
         }
     }
 }
