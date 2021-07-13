@@ -8,12 +8,22 @@ namespace Teste01
     {
         static void Main(string[] args)
         {
-            
+            string xNome;
+            string xSobrenome;
+            string xCidade;
             DBCONN cn0 = new DBCONN(); //classe define a connectionstring e abre a conexão
 
             //Programado na classe DBCONN
             //SQLiteCommand  cmd = new SQLiteCommand("SELECT * FROM TESTETB", cn0.sqlConnection);
             //SQLiteDataReader dtr = cmd.ExecuteReader();
+            Console.Write("Nome      :");
+            xNome = Console.ReadLine().ToUpper();
+
+            Console.Write("Sobrenome :");
+            xSobrenome = Console.ReadLine().ToUpper();
+
+            Console.Write("Cidade    :");
+            xCidade = Console.ReadLine().ToUpper();   
 
             var dtr = cn0.Consulta("SELECT ID FROM TESTETB WHERE ID = (SELECT MAX(ID) FROM TESTETB) ");
             dtr.Read();
@@ -21,9 +31,10 @@ namespace Teste01
             var MAXID = Convert.ToInt32(dtr["ID"]) + 1;
             //Console.WriteLine(MAXID);
             //Console.WriteLine(MAXID.GetType());
-            Entrada ent = new Entrada(MAXID, "Jose", "dos Santos", "Botucatu","" + DateTime.Now.ToString() + "");
+            //Entrada ent = new Entrada(MAXID, "Jose", "dos Santos", "Botucatu","" + DateTime.Now.ToString() + "");
+            Entrada ent = new Entrada(MAXID, xNome, xSobrenome, xCidade, DateTime.Now.ToString());
             
-            cn0.Executa("DELETE FROM TESTETB WHERE ID > 5 ");            
+            //cn0.Executa("DELETE FROM TESTETB WHERE ID > 5 ");            
             cn0.InsereOBJ(ent, "TESTETB");
             
             dtr = cn0.Consulta("SELECT * FROM TESTETB");

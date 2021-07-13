@@ -53,23 +53,13 @@ namespace Teste01
             FieldValueStr = "";
             strSQL = "INSERT INTO " + _tabName + " (";
             strValues = " Values (";
-            //int FieldValueInt;
+
              foreach(PropertyInfo pi in type.GetProperties())
              {
                 FieldName = pi.Name;
-                // if ( pi.GetValue(FieldName).GetType() == typeof(int) )
-                //if ( FieldName != "ID")
-                //{
-                //    FieldValueInt = (int)pi.GetValue(FieldName).ToString();
-                    //Console.WriteLine(FieldName + "/" + FieldValueInt.ToString());
-                //}
-                //else
-                //{
-                    FieldValueStr = pi.GetValue(o).ToString();
-                    //Console.WriteLine(FieldName + "/" + FieldValueStr);
-                    //Console.WriteLine(pi.GetValue(o).GetType());
-                //}  
+                FieldValueStr = pi.GetValue(o).ToString();
                 strSQL = strSQL + (strSQL.Substring(strSQL.Length - 1, 1) == "("?"":",") + FieldName;
+                //tive que declarar um tipo Type para fazer a comparação
                 if (pi.GetValue(o).GetType().Equals(inteiro))
                 {
                     strValues  = strValues + (strValues.Substring(strValues.Length - 1, 1) == "("?"":",") + FieldValueStr;
